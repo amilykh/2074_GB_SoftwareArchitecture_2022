@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.\
+    \  \nYou can find out more about Swagger at [https://swagger.io]\n(https://swagger.io).\
+    \ In the third iteration of the pet store, we've \nswitched to the design first\
+    \ approach!\nYou can now help us improve the API whether it's by making changes\
+    \ to \nthe definition itself or to the code.\nThat way, with time, we can improve\
+    \ the API in general, and expose some \nof the new features in OAS3.\n\n_If you're\
+    \ looking for the Swagger 2.0/OAS 2.0 version of Petstore, \nthen click [here](https://editor.swagger.io/?url=\n\
+    https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load\nvia\
+    \ the `Edit > Load Petstore OAS 2.0` menu option!_\n\nSome useful links:\n- [The\
+    \ Pet Store repository](https://github.com/swagger-api/swagger-petstore)\n- [The\
+    \ source API definition for the Pet Store](\nhttps://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost/api/v3
+- url: https://petstore3.swagger.io/api/v3
+tags:
+- name: cpu
+  description: Operations about cpu
+paths:
+  /cpu:
+    post:
+      tags:
+      - cpu
+      summary: Create cpu
+      description: Creates of cpu.
+      operationId: create_cpu
+      requestBody:
+        description: Created cpu object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+      x-openapi-router-controller: swagger_server.controllers.cpu_controller
+  /cpu/createWithList:
+    post:
+      tags:
+      - cpu
+      summary: Creates list of cpus with given input array
+      description: Creates list of cpus with given input array
+      operationId: create_cpus_with_list_input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Cpu'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+        default:
+          description: successful operation
+      x-openapi-router-controller: swagger_server.controllers.cpu_controller
+  /cpu/{cpuName}:
+    get:
+      tags:
+      - cpu
+      summary: Get cpu by cpu name
+      description: ""
+      operationId: get_cpu_by_name
+      parameters:
+      - name: cpuName
+        in: path
+        description: 'The name that needs to be fetched. Use cpu1 for testing. '
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Cpu'
+        "400":
+          description: Invalid cpuName supplied
+        "404":
+          description: Cpu not found
+      x-openapi-router-controller: swagger_server.controllers.cpu_controller
+    put:
+      tags:
+      - cpu
+      summary: Update cpu
+      description: Updates cpu.
+      operationId: update_cpu
+      parameters:
+      - name: cpuName
+        in: path
+        description: name that need to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Update an existent cpu in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cpu'
+      responses:
+        default:
+          description: successful operation
+      x-openapi-router-controller: swagger_server.controllers.cpu_controller
+    delete:
+      tags:
+      - cpu
+      summary: Delete cpu
+      description: Deletes cpu.
+      operationId: delete_cpu
+      parameters:
+      - name: cpuName
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid cpuName supplied
+        "404":
+          description: Cpu not found
+      x-openapi-router-controller: swagger_server.controllers.cpu_controller
+components:
+  schemas:
+    Cpu:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        cpuName:
+          type: string
+          example: AMD Ryzen 5 5600X
+        cpuCores:
+          type: integer
+          description: Cpu cores
+          format: int32
+          example: 4
+      example:
+        cpuCores: 4
+        id: 10
+        cpuName: AMD Ryzen 5 5600X
+      xml:
+        name: cpu
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: tag
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    CpuArray:
+      description: List of cpu object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Cpu'
+
